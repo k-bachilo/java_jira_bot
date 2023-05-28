@@ -1,0 +1,45 @@
+//plugins {
+//    id("io.micronaut.application") version "3.7.9"
+//}
+//
+//version = "0.1"
+//group = "dev.app"
+//
+//repositories {
+//    mavenCentral()
+//}
+//
+//dependencies {
+//    annotationProcessor("org.projectlombok:lombok")
+//    annotationProcessor("io.micronaut:micronaut-http-validation")
+//    implementation("io.micronaut:micronaut-http-client")
+//    implementation("io.micronaut:micronaut-jackson-databind")
+//    implementation("io.micronaut.reactor:micronaut-reactor")
+//    implementation("io.micronaut.reactor:micronaut-reactor-http-client")
+//    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+//    implementation("io.micronaut.sql:micronaut-jooq")
+//    implementation("jakarta.annotation:jakarta.annotation-api")
+//    compileOnly("org.projectlombok:lombok")
+//    runtimeOnly("ch.qos.logback:logback-classic")
+//    runtimeOnly("org.postgresql:postgresql")
+//}
+//
+//application {
+//    mainClass.set("dev.app.JiraBot")
+//}
+//java {
+//    sourceCompatibility = JavaVersion.toVersion("17")
+//    targetCompatibility = JavaVersion.toVersion("17")
+//}
+//
+//graalvmNative.toolchainDetection = false
+//micronaut {
+//    runtime("netty")
+//    processing {
+//        incremental(true)
+//        annotations("dev.app.*")
+//    }
+//    testResources {
+//        additionalModules.add("jdbc-postgresql")
+//    }
+//}
