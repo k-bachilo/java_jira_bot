@@ -1,11 +1,32 @@
 micronaut:
   application:
     name: jira-bot
+  caches:
+    headlines:
+      charset: 'UTF-8'
+
 datasources:
   default:
     driver-class-name: org.postgresql.Driver
     db-type: postgres
+    username: postgres
+    password: admin
+    url: jdbc:postgresql://localhost:5432/postgres
+
 netty:
   default:
     allocator:
       max-order: 3
+
+liquibase:
+  datasources:
+    default:
+      change-log: 'classpath:db/liquibase-changelog.yaml'
+
+telegram:
+  bot:
+    name:
+    token:
+
+jira:
+  token:

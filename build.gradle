@@ -1,9 +1,13 @@
+//import nu.studer.gradle.jooq.JooqEdition
+//import org.jooq.meta.jaxb.Logging
+//
 //plugins {
-//    id("io.micronaut.application") version "3.7.9"
+//    id "io.micronaut.application" version "${micronautApplication}"
+//    id "nu.studer.jooq" version "${studerVersion}"
 //}
 //
-//version = "0.1"
-//group = "dev.app"
+//group "${groupId}"
+//version "${currentVersion}"
 //
 //repositories {
 //    mavenCentral()
@@ -22,14 +26,18 @@
 //    compileOnly("org.projectlombok:lombok")
 //    runtimeOnly("ch.qos.logback:logback-classic")
 //    runtimeOnly("org.postgresql:postgresql")
+//    implementation("io.micronaut.cache:micronaut-cache-caffeine")
+//    implementation("io.micronaut.liquibase:micronaut-liquibase")
+//    implementation "org.springframework.security:spring-security-crypto:${springSecurityVersion}"
+//    implementation "org.telegram:telegrambots:${telegramBotsVersion}"
 //}
 //
 //application {
-//    mainClass.set("dev.app.JiraBot")
+//    mainClass.set("dev.app.JiraBotApplication")
 //}
 //java {
-//    sourceCompatibility = JavaVersion.toVersion("17")
-//    targetCompatibility = JavaVersion.toVersion("17")
+//    sourceCompatibility = JavaVersion.toVersion("${javaVersion}")
+//    targetCompatibility = JavaVersion.toVersion("${javaVersion}")
 //}
 //
 //graalvmNative.toolchainDetection = false
@@ -39,7 +47,76 @@
 //        incremental(true)
 //        annotations("dev.app.*")
 //    }
-//    testResources {
-//        additionalModules.add("jdbc-postgresql")
+//}
+//
+//jooq {
+//    version = "${jooqVersion}"
+//    edition = JooqEdition.OSS
+//    configurations {
+//        main {
+//            generateSchemaSourceOnCompilation = true
+//            generationTool {
+//                logging = Logging.ERROR
+//                jdbc {
+//                    driver = 'org.postgresql.Driver'
+//                    url = 'jdbc:postgresql://localhost:5432/postgres?sslmode=disable'
+//                    user = 'postgres'
+//                    password = 'admin'
+//                    properties {
+//                        property {
+//                            key = 'ssl'
+//                            value = 'false'
+//                        }
+//                    }
+//                }
+//                generator {
+//                    name = 'org.jooq.codegen.DefaultGenerator'
+//                    database {
+//                        name = 'org.jooq.meta.postgres.PostgresDatabase'
+//                        inputSchema = 'public'
+//                        includes = '.*'
+//                        forcedTypes {
+//                            forcedType {
+//                                name = 'varchar'
+//                                includeExpression = '.*'
+//                                includeTypes = 'JSONB?'
+//                            }
+//                            forcedType {
+//                                name = 'varchar'
+//                                includeExpression = '.*'
+//                                includeTypes = 'INET'
+//                            }
+//                        }
+//                    }
+//                    generate {
+//                        pojosAsKotlinDataClasses = false
+//                        deprecated = false
+//                        records = true
+//                        pojos = false
+//                        immutablePojos = true
+//                        fluentSetters = false
+//                        daos = false
+//                        jpaAnnotations = true
+//                    }
+//                    target {
+//                        packageName = 'dev.app.model'
+//                        directory = 'generated/jooq'
+//                    }
+//                    strategy.name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+//                }
+//            }
+//        }
 //    }
 //}
+//
+//def dbDriver = System.getenv('DATABASE_DRIVER') ?: 'org.postgresql.Driver'
+//def dbUser = System.getenv('DATABASE_USER') ?: 'micronaut_template'
+//def dbPassword = System.getenv('DATABASE_PASSWORD') ?: 'password123'
+//def dbHost = System.getenv('DATABASE_HOST') ?: '127.0.0.1'
+//def dbPort = System.getenv('DATABASE_PORT') ?: 5432
+//def dbName = System.getenv('DATABASE_NAME') ?: 'micronaut_template'
+//def dbUrl = System.getenv('DATABASE_URL') ?: "jdbc:postgresql://$dbHost:$dbPort/$dbName"
+//
+//tasks.generateJooq.mustRunAfter(tasks.createDatabase)
+//tasks.compileJava.dependsOn(tasks.createDatabase)
+//tasks.migratePrimaryDB.dependsOn(tasks.composeUp)
